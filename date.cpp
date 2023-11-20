@@ -90,6 +90,16 @@ public:
         checkThis();
     }
 
+    Date (const Date& dt){
+            this->isOurEra = dt.isOurEra;
+            this->year = dt.year;
+            this->month = dt.month;
+            this->day = dt.day;
+            this->hour = dt.hour;
+            this->minute = dt.minute;
+            this->second = dt.second;
+    }
+
     Date add(int years = 0, int months = 0, int days = 0, int hours = 0, int minutes = 0, int seconds = 0) {
     int newYear = year + years;
     int newMonth = month + months;
