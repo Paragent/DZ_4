@@ -61,10 +61,6 @@ private:
             second -= 60;
             minute++;
         }
-        if (month <= 0) {
-            year--;
-            month += 12;
-        }
     }
 
 public:
@@ -101,61 +97,56 @@ public:
     }
 
     Date add(int years = 0, int months = 0, int days = 0, int hours = 0, int minutes = 0, int seconds = 0) {
-    int newYear = year + years;
-    int newMonth = month + months;
-    int newDay = day + days;
-    int newHour = hour + hours;
-    int newMinute = minute + minutes;
-    int newSecond = second + seconds;
+        int newYear = year + years;
+        int newMonth = month + months;
+        int newDay = day + days;
+        int newHour = hour + hours;
+        int newMinute = minute + minutes;
+        int newSecond = second + seconds;
 
-    while (newMonth > 12) {
-        newMonth -= 12;
-        newYear++;
-    }
+        while (newMonth > 12) {
+            newMonth -= 12;
+            newYear++;
+        }
 
-    while (newMonth <= 0) {
-        newMonth += 12;
-        newYear--;
-    }
+        while (newMonth <= 0) {
+            newMonth += 12;
+            newYear--;
+        }
 
-    while (newDay > daysInMonth(newYear, newMonth)) {
-        newDay -= daysInMonth(newYear, newMonth);
-        newMonth++;
-    }
+        while (newDay > daysInMonth(newYear, newMonth)) {
+            newDay -= daysInMonth(newYear, newMonth);
+            newMonth++;
+        }
 
-    if (newDay <= 0) {
-        newMonth--;
-        newDay += daysInMonth(newYear, newMonth);
-    }
+        if (newDay <= 0) {
+            newMonth--;
+            newDay += daysInMonth(newYear, newMonth);
+        }
 
-    while (newHour >= 24) {
-        newHour -= 24;
-        newDay++;
-    }
+        while (newHour >= 24) {
+            newHour -= 24;
+            newDay++;
+        }
 
-    while (newMinute >= 60) {
-        newMinute -= 60;
-        newHour++;
-    }
+        while (newMinute >= 60) {
+            newMinute -= 60;
+            newHour++;
+        }
 
-    while (newSecond >= 60) {
-        newSecond -= 60;
-        newMinute++;
-    }
+        while (newSecond >= 60) {
+            newSecond -= 60;
+            newMinute++;
+        }
 
-    if (newMonth <= 0) {
-        newYear--;
-        newMonth += 12;
-    }
+        year = newYear;
+        month = newMonth;
+        day = newDay;
+        hour = newHour;
+        minute = newMinute;
+        second = newSecond;
 
-    year = newYear;
-    month = newMonth;
-    day = newDay;
-    hour = newHour;
-    minute = newMinute;
-    second = newSecond;
-
-    return *this;
+        return *this;
 }
 
 Date subtract(int years, int months, int days, int hours, int minutes, int seconds) {
