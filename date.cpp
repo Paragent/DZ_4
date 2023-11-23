@@ -33,6 +33,24 @@ private:
     }
 
     void checkThis() {
+        if(isOurEra && day == 0){
+            day++;
+        }
+        if(isOurEra && month == 0){
+            month++;
+        }
+        if(isOurEra && year == 0){
+            year++;
+        }
+        if(!isOurEra && day == 0){
+            day++;
+        }
+        if(!isOurEra && month == 0){
+            month++;
+        }
+        if(!isOurEra && year == 0){
+            year++;
+        }
         while (month > 12) {
             month -= 12;
             year++;
@@ -53,13 +71,25 @@ private:
             hour -= 24;
             day++;
         }
+        while (hour < 0) {
+            hour += 24;
+            day--;
+        }
         while (minute >= 60) {
             minute -= 60;
             hour++;
         }
-        while (second >= 60) {
-            second -= 60;
-            minute++;
+        while (minute < 0) {
+            minute += 60;
+            hour--;
+        }
+        while (second < 0) {
+            second += 60;
+            minute--;
+        }
+        if (year < 0){
+            isOurEra = false;
+            year = abs(year);
         }
     }
 
@@ -285,7 +315,7 @@ Date subtract(int years, int months, int days, int hours, int minutes, int secon
     Date operator-(const Date& dt) const {
         Date res = *this;
         res.checkThis();
-        return res -= dt;
+        return res-=dt;
     }
 
     Date& operator=(const Date& dt) {
@@ -346,9 +376,42 @@ Date subtract(int years, int months, int days, int hours, int minutes, int secon
 };
 
 int main() {
-    Date date1(2023, 11, 19, 15, 30, 45, true);
-    date1.subtract(5, 3, 10, 0, 120, 376);
-    cout << date1;
+    Date d1;
+    cout << d1  << endl;
+    Date d2(2060, 1, 1, 0, 0, 0, true);
+    cout << (d1 > d2) << endl;
+    cout << (d1 < d2) << endl;
+    cout << (d1 == d2) << endl;
+    Date d3 = d2.subtract(2060, 1, 1, 0, 0, 0);
+    cout << d3 << endl;
+    cout << d3+d2-d1 << endl;
+    Date d4(d3 + d2 - d1);
+    cout << d4 << endl;
+    Date d5(d4);
+    cout << d5 << endl;
+    d4 += d5 - d4.add(40, 1, 1, 0, 0, 0);
+
+    cout << d3 << endl;
+    cout << d4 << endl;
+    cout << d5 << endl;
+
+    Date d6(0, 0, 0, 0, 0, 0, false);
+    Date d7(0, 0, 0, 0, 0, 0, true);
+    cout << d6 << endl;
+    cout << d7 << endl;
+
+    Date d8 = d6 - d7 - d1;
+    cout << d6 + d7 << endl;
+    Date d9(d8);
+
+    cout << d9 << endl; // 1/1/1 0:0:0 BC  31/12/1961 0:0:0 BC
+
+    Date d10;
+    Date d11 = d10 - d10;// 1/1/1 0:0:0 AD
+    Date d12(d11);
+    Date d13;
+    cout << d13 + d11 - d10 << endl;// 2/2/1961 0:0:0 AD   1/1/1 0:0:0 AD
 
     return 0;
 }
+
